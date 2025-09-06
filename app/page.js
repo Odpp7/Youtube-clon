@@ -2,14 +2,19 @@
 import { SearchBar } from "./components/SearchBar";
 import { SideBar } from "./components/SideBar";
 import { FilterTags } from "./components/FilterTags";
-import { useState } from "react";
+import { VideoList } from "./components/VideoList";
+import SearchVideo from "./services/SearchVideo";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [videos, setVideos] = useState([]);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => { setIsSidebarOpen(!isSidebarOpen); };
+
+  useEffect(() => {
+    SearchVideo("Real Madrid").then(setVideos);
+  }, []);
 
   return (
     <main>
@@ -20,7 +25,7 @@ export default function Home() {
 
         <div>
           <FilterTags isSidebarOpen={isSidebarOpen} />
-
+          <VideoList videos={videos} layout="grid" />
         </div>
       </section>
     </main>
