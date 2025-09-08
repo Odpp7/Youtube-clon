@@ -13,7 +13,7 @@ export default function Home() {
   const toggleSidebar = () => { setIsSidebarOpen(!isSidebarOpen); };
 
   useEffect(() => {
-    SearchVideo("Real Madrid").then(setVideos);
+    SearchVideo("Tendencias").then(setVideos);
   }, []);
 
   return (
@@ -25,7 +25,7 @@ export default function Home() {
 
         <div>
           <FilterTags isSidebarOpen={isSidebarOpen} />
-          <VideoList videos={videos} layout="grid" />
+          <VideoList isSidebarOpen={isSidebarOpen} videos={videos} layout="grid" />
         </div>
       </section>
     </main>

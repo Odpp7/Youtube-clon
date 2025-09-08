@@ -67,13 +67,8 @@ export const SearchBar = ({ onMenuClick }) => {
         <button onClick={onMenuClick} className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
           <Menu size={20} />
         </button>
-        <div className="flex items-center space-x-1">
-          <img
-            src="/Youtube.png"
-            alt="YouTube Logo"
-            width="150"
-            className="cursor-pointer"
-          />
+        <div className="flex items-center space-x-1" onClick={(e) => { e.preventDefault(); router.push('/');}}>
+          <img src="/Youtube.png" width="150" className="cursor-pointer"/>
           <span className="text-xs text-gray-500 ml-1">CO</span>
         </div>
       </div>
@@ -145,9 +140,9 @@ export const SearchBar = ({ onMenuClick }) => {
                 
                 <div onClick={handleLogout} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded cursor-pointer">
                   <div className="w-6 h-6 flex items-center justify-center">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"> <LogOut/> </svg>
+                    <svg className="w-5 h-5"> <LogOut/> </svg>
                   </div>
-                  <span className="text-gray-700">Cerrar sesión</span>
+                  <span>Cerrar sesión</span>
                 </div>
               </div>
             </div>

@@ -27,7 +27,7 @@ export default function SearchContent() {
         <SideBar isOpen={isSidebarOpen} />
         <div className="flex-1">
           <FilterTags isSidebarOpen={isSidebarOpen} />
-          <VideoList videos={videos} layout="list" />
+          <VideoList isSidebarOpen={isSidebarOpen} videos={videos} layout="list" />
         </div>
       </div>
     </div>
