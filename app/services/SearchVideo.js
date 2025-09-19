@@ -16,11 +16,6 @@ export default async function SearchVideo(query) {
     
     // Segundo request: obtener estadísticas y detalles
     const detailsResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics,contentDetails&id=${videoIds}&key=${API_KEY}`);
-
-    // Comentarios principales
-    const commentsRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}&maxResults=20&key=${API_KEY}`
-    );
     
     if (!detailsResponse.ok) {
       throw new Error("Error obteniendo detalles de videos");
