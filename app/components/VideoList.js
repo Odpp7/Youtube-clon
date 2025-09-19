@@ -1,4 +1,3 @@
-// components/VideoList.js
 "use client";
 
 import { VideoCard } from "./VideoCard";
