@@ -38,14 +38,8 @@ export const VideoCard = ({ video, layout }) => {
   };
 
   const views = useMemo(() => formatViews(statistics?.viewCount), [statistics]);
-  const published = useMemo(
-    () => formatDate(snippet?.publishedAt),
-    [snippet]
-  );
-  const duration = useMemo(
-    () => formatDuration(contentDetails?.duration),
-    [contentDetails]
-  );
+  const published = useMemo(() => formatDate(snippet?.publishedAt),[snippet]);
+  const duration = useMemo(() => formatDuration(contentDetails?.duration),[contentDetails]);
 
   return (
     <Link href={`/video/${videoId}`} className="block">
@@ -70,9 +64,7 @@ export const VideoCard = ({ video, layout }) => {
         <div className={layout === "grid" ? "mt-3" : "flex-1 pl-3"}>
           <div className="flex items-start gap-2">
             <div className="flex flex-col">
-              <h3 className="text-sm font-semibold line-clamp-2 leading-snug mb-1">
-                {snippet?.title}
-              </h3>
+              <h3 className="text-sm font-semibold line-clamp-2 leading-snug mb-1">{snippet?.title}</h3>
               <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
               <p className="text-xs text-gray-600">
                 {views} • {published}

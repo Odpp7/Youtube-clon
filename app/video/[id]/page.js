@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useParams } from "next/navigation";
 import { SearchBar } from "../../components/SearchBar";
 import { SideBar } from "../../components/SideBar";
 import { VideoViewer } from "../../components/VideoViewer";
