@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, Search, Mic, User, EllipsisVertical, ChevronDown, Users, ChevronRight, LogOut } from "lucide-react";
+import { Menu, Search, Mic, User, EllipsisVertical, ChevronDown, Users, ChevronRight, LogOut, HardDriveUpload, HardDriveDownload  } from "lucide-react";
 import { supabase } from "../services/supabaseClient";
 
 export const SearchBar = ({ onMenuClick }) => {
@@ -59,6 +59,10 @@ export const SearchBar = ({ onMenuClick }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const goToUpload = () =>{
+    router.push("/uploadvideo");
+  }
 
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -136,6 +140,13 @@ export const SearchBar = ({ onMenuClick }) => {
                   </div>
                   <span className="text-gray-700">Cambiar de cuenta</span>
                   <svg className="w-4 h-4 ml-auto"> <ChevronRight size={15}/></svg>
+                </div>
+
+                <div onClick={goToUpload} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded cursor-pointer">
+                  <div className="w-6 h-6 flex items-center justify-center">
+                    <svg className="w-5 h-5"> <HardDriveDownload/></svg>
+                  </div>
+                  <span className="text-gray-700">Subir un video</span>
                 </div>
                 
                 <div onClick={handleLogout} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded cursor-pointer">

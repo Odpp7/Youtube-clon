@@ -1,13 +1,18 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import getVideoDetails from "../services/getVideoDetails";
 import { ThumbsUp, ThumbsDown, ArrowDownToLine, CornerUpRight, CircleDollarSign, Ellipsis } from "lucide-react";
+import { VideoList } from "../components/VideoList";
+import SearchVideo from "../services/SearchVideo";
 
 export const VideoViewer = () => {
   const { id } = useParams();
   const [video, setVideo] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q");
 
   const formatViews = (num) => {
     if (!num) return "Sin vistas";
@@ -34,6 +39,12 @@ export const VideoViewer = () => {
       });
     }
   }, [id]);
+
+  useEffect(() => {
+    if (query) {
+      SearchVideo(query).then(setVideos).catch(console.error);
+    }
+  }, [query]);
 
   const likes = useMemo(() => formatViews(video?.statistics?.likeCount));
 
@@ -123,23 +134,7 @@ export const VideoViewer = () => {
 
       {/* Columna lateral */}
       <aside className="w-96 p-4 hidden lg:block">
-        <h2 className="font-semibold mb-3">Videos recomendados</h2>
-        <div className="space-y-3">
-          <div className="flex gap-2">
-            <img
-              src="https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg"
-              alt="thumb"
-              className="w-40 h-24 rounded-lg object-cover"
-            />
-            <div>
-              <p className="text-sm font-semibold line-clamp-2">
-                Desafío del Siglo XXI - En Vivo
-              </p>
-              <p className="text-xs text-gray-400">El Desafío</p>
-              <p className="text-xs text-gray-400">26K usuarios</p>
-            </div>
-          </div>
-        </div>
+        <VideoList videos={videos} layout="list" isInSidebar={true} />
       </aside>
     </main>
   );

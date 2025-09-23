@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 export const VideoCard = ({ video, layout }) => {
   const { snippet, statistics, contentDetails } = video;
-  const videoId = video.id?.videoId || video.id; // ✅ siempre obtenemos el id real
+  const videoId = video.id?.videoId || video.id;
 
   // 🔹 Formatear vistas
   const formatViews = (num) => {
@@ -38,11 +38,45 @@ export const VideoCard = ({ video, layout }) => {
   };
 
   const views = useMemo(() => formatViews(statistics?.viewCount), [statistics]);
-  const published = useMemo(() => formatDate(snippet?.publishedAt),[snippet]);
-  const duration = useMemo(() => formatDuration(contentDetails?.duration),[contentDetails]);
+  const published = useMemo(() => formatDate(snippet?.publishedAt), [snippet]);
+  const duration = useMemo(() => formatDuration(contentDetails?.duration), [contentDetails]);
+
+  if (layout === "sidebar") {
+    return (
+      <Link href={`/video/${videoId}?q=${encodeURIComponent(snippet?.title || '')}`} className="block">
+        <div className="flex gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer transition-colors">
+          <div className="relative flex-shrink-0">
+            <img
+              src={snippet?.thumbnails?.medium?.url || snippet?.thumbnails?.high?.url}
+              alt={snippet?.title}
+              className="w-40 h-24 object-cover rounded"
+            />
+            {duration && (
+              <span className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 py-0.5 rounded">
+                {duration}
+              </span>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h3 className="font-medium text-sm line-clamp-2 mb-1 text-black leading-tight">
+              {snippet?.title}
+            </h3>
+            <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
+            <p className="text-xs text-gray-500">
+              {statistics?.viewCount ? 
+                `${parseInt(statistics.viewCount).toLocaleString()} vistas` : 
+                'Sin datos'
+              } • {published}
+            </p>
+          </div>
+        </div>
+      </Link>
+    );
+  }
 
   return (
-    <Link href={`/video/${videoId}`} className="block">
+    <Link href={`/video/${videoId}?q=${encodeURIComponent(snippet?.title || '')}`} className="block">
       <div className="cursor-pointer transition-all duration-300">
         {/* Miniatura */}
         <div className="relative flex-shrink-0">
