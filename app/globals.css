@@ -4,6 +4,36 @@
   --background: #ffffff;
   --foreground: #171717;
   --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+}
+
+[data-theme="dark"] {
+  --background: #0f0f0f;
+  --foreground: #ffffff;
+  --white: #0f0f0f;
+  --gray-50: #1f1f1f;
+  --gray-100: #2a2a2a;
+  --gray-200: #3a3a3a;
+  --gray-300: #4a4a4a;
+  --gray-400: #6a6a6a;
+  --gray-500: #8a8a8a;
+  --gray-600: #aaaaaa;
+  --gray-700: #cccccc;
+  --gray-800: #e0e0e0;
+  --gray-900: #ffffff;
 }
 
 @theme inline {
@@ -13,17 +43,151 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--white);
-  color: var(--background);
+  background: var(--background);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Clases personalizadas para modo oscuro */
+.bg-custom {
+  background-color: var(--background);
+}
 
+.bg-custom-gray-50 {
+  background-color: var(--gray-50);
+}
+
+.bg-custom-gray-100 {
+  background-color: var(--gray-100);
+}
+
+.bg-custom-gray-200 {
+  background-color: var(--gray-200);
+}
+
+.text-custom {
+  color: var(--foreground);
+}
+
+.text-custom-gray-400 {
+  color: var(--gray-400);
+}
+
+.text-custom-gray-500 {
+  color: var(--gray-500);
+}
+
+.text-custom-gray-600 {
+  color: var(--gray-600);
+}
+
+.text-custom-gray-700 {
+  color: var(--gray-700);
+}
+
+.border-custom-gray-200 {
+  border-color: var(--gray-200);
+}
+
+.border-custom-gray-300 {
+  border-color: var(--gray-300);
+}
+
+.hover\:bg-custom-gray-50:hover {
+  background-color: var(--gray-50);
+}
+
+.hover\:bg-custom-gray-100:hover {
+  background-color: var(--gray-100);
+}
+
+.hover\:bg-custom-gray-200:hover {
+  background-color: var(--gray-200);
+}
+
+/* Transiciones suaves */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Estilos específicos para componentes */
+.search {
+  background-color: var(--background);
+  color: var(--foreground);
+  border-color: var(--gray-300);
+}
+
+.search:focus {
+  border-color: var(--blue-500);
+}
+
+/* Botón de modo oscuro */
+.dark-mode-toggle {
+  background-color: var(--gray-100);
+  color: var(--foreground);
+  border: 1px solid var(--gray-300);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode-toggle:hover {
+  background-color: var(--gray-200);
+}
+
+/* Dropdown del usuario */
+.user-dropdown .dropdown-menu {
+  background-color: var(--background);
+  border-color: var(--gray-200);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .user-dropdown .dropdown-menu {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Videos */
+.video-card {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.video-card:hover {
+  background-color: var(--gray-50);
+}
+
+/* Botones de video */
+.video-button {
+  background-color: var(--gray-100);
+  color: var(--foreground);
+  border: 1px solid var(--gray-300);
+}
+
+.video-button:hover {
+  background-color: var(--gray-200);
+}
+
+/* Información del video */
+.video-info-box {
+  background-color: var(--gray-50);
+}
+
+/* Comentarios */
+.comment {
+  color: var(--foreground);
+}
+
+.comment .author {
+  color: var(--foreground);
+}
+
+.comment .date {
+  color: var(--gray-500);
+}
+
+.comment .likes {
+  color: var(--gray-500);
+}

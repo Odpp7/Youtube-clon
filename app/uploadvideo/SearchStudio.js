@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, Search, User, ChevronDown, Users, ChevronRight, LogOut, HardDriveDownload, Video } from "lucide-react";
+import { Menu, Search, User, ChevronDown, Users, ChevronRight, LogOut, Video } from "lucide-react";
 import { supabase } from "../services/supabaseClient";
 
 export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
@@ -61,7 +61,7 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
           <Menu size={18} className="md:w-5 md:h-5" />
         </button>
         <div className="flex items-center space-x-1">
-          <img src="/YoutubeStudio.png" width="80" className="cursor-pointer md:w-[120px]"/>
+          <img src="/Second.png" width="80" className="cursor-pointer md:w-[120px]" />
         </div>
       </div>
 

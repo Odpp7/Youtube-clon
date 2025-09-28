@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { SearchBar } from "../../components/SearchBar";
-import { SideBar } from "../../components/SideBar";
 import { VideoViewer } from "./VideoViewer";
 import SearchVideo from "../../services/SearchVideo";
 
@@ -18,7 +17,7 @@ export default function VideoPage() {
   return (
     <div>
       <SearchBar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
-          <VideoViewer/>
+      <VideoViewer/>
     </div>
   );
 }
