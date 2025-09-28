@@ -60,7 +60,6 @@ export const SearchBar = ({ onMenuClick }) => {
         </button>
         <div className="flex items-center space-x-1" onClick={(e) => { e.preventDefault(); router.push('/');}}>
           <img src="/Youtube.png" width="100" className="cursor-pointer md:w-[150px]"/>
-          <span className="text-xs text-gray-500 ml-1">CO</span>
         </div>
       </div>
 
