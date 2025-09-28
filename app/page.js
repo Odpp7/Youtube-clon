@@ -12,6 +12,10 @@ export default function Home() {
 
   const toggleSidebar = () => { setIsSidebarOpen(!isSidebarOpen); };
 
+  const handleCategorySearch = (category) => {
+    SearchVideo(category).then(setVideos);
+  };
+
   useEffect(() => {
     SearchVideo("mostPopular").then(setVideos);
   }, []);
@@ -21,7 +25,7 @@ export default function Home() {
       <SearchBar onMenuClick={toggleSidebar} />
       
       <section>
-        <SideBar isOpen={isSidebarOpen} />
+        <SideBar isOpen={isSidebarOpen} onCategoryClick={handleCategorySearch} />
 
         <div>
           <FilterTags isSidebarOpen={isSidebarOpen} />

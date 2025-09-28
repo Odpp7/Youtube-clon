@@ -24,7 +24,8 @@ export const SupabaseVideoList = ({ layout = "grid" }) => {
     const { data, error } = await supabase
       .from("Videos")
       .select("*")
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .eq("Visibilidad", "publica");
 
     if (error) {
       console.error("Error al traer videos de Supabase:", error);
@@ -40,10 +41,10 @@ export const SupabaseVideoList = ({ layout = "grid" }) => {
   }, []);
 
   return (
-    <div>
+    <>
       {videos.map((video) => (
         <VideoCard key={video.id} video={video} layout={layout} />
       ))}
-    </div>
+    </>
   );
 };

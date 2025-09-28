@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Filter, Eye, Trash, CircleFadingArrowUp } from "lucide-react";
+import { Eye, Trash, CircleFadingArrowUp, X } from "lucide-react";
 import { supabase } from "../services/supabaseClient";
 import { ModalVideo } from "./modalVideo";
 
@@ -9,6 +9,7 @@ export const VideoSection = ({ isSidebarOpen }) => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState(null);
+  const [playingVideo, setPlayingVideo] = useState(null);
 
   const fetchVideos = async () => {
     setLoading(true);
@@ -59,6 +60,14 @@ export const VideoSection = ({ isSidebarOpen }) => {
     fetchVideos();
   };
 
+  const handlePlayVideo = (video) => {
+    setPlayingVideo(video);
+  };
+
+  const handleClosePlayer = () => {
+    setPlayingVideo(null);
+  };
+
   return (
     <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-16'} bg-white`}>
       <div className="bg-white border-b border-gray-200 p-4 md:p-6">
@@ -88,7 +97,7 @@ export const VideoSection = ({ isSidebarOpen }) => {
               <div key={video.id} className="border-b last:border-b-0 hover:bg-gray-50 p-3 md:p-4">
                 <div className="block md:hidden space-y-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-24 h-16 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden">
+                    <div className="w-24 h-16 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => handlePlayVideo(video)}>
                       {video.URL && <video src={video.URL} className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -122,7 +131,7 @@ export const VideoSection = ({ isSidebarOpen }) => {
 
                 <div className="hidden md:grid md:grid-cols-12 gap-4 items-center">
                   <div className="flex col-span-4 items-center gap-3">
-                    <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer" onClick={() => handlePlayVideo(video)}>
                       {video.URL && <video src={video.URL} className="w-full h-full object-cover" />}
                     </div>
                     <div className="min-w-0">
@@ -163,6 +172,24 @@ export const VideoSection = ({ isSidebarOpen }) => {
 
       {showModal && (
         <ModalVideo onClose={handleCloseModal} video={selectedVideo} />
+      )}
+
+      {/* Reproductor de video */}
+      {playingVideo && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+          <div className="relative w-full max-w-4xl mx-4">
+            <button onClick={handleClosePlayer} className="absolute -top-10 right-0 text-white hover:text-gray-300  cursor-pointer">
+              <X size={32} />
+            </button>
+            <div className="bg-black rounded-lg overflow-hidden">
+              <video src={playingVideo.URL} controls autoPlay className="w-full h-auto max-h-[80vh]"/>
+              <div className="p-4 text-white">
+                <h3 className="text-lg font-semibold">{playingVideo.Name}</h3>
+                <p className="text-sm text-gray-300 mt-2">{playingVideo.Description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );

@@ -103,7 +103,7 @@ export const VideoViewer = () => {
         {/* YouTube content */}
         {!isSupabase && (
           <>
-            <section className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 mt-3 md:mt-4 px-2 md:px-0">
+            <section className="flex flex-col md:flex-row md:items-center md:space-x-65 gap-3 md:gap-4 mt-3 md:mt-4 px-2 md:px-0">
               <div className="flex items-center gap-3">
                 <img src={video.channelInfo.thumbnail} className="w-10 md:w-12 rounded-full"/>
                 <div>
@@ -115,36 +115,36 @@ export const VideoViewer = () => {
                 <button className="bg-[#F2F2F2] px-3 py-2 rounded-full font-[700] hover:bg-gray-200 text-black cursor-pointer text-xs md:text-[14px] ml-auto md:ml-0">
                   Unirme
                 </button>
+                <button className="bg-black px-4 py-2 rounded-full font-semibold hover:bg-gray-800 cursor-pointer text-sm md:text-base md:text-[14px] ml-auto md:ml-0">
+                  Suscribirme
+                </button>
               </div>
 
-              <button className="bg-black px-4 py-2 rounded-full font-semibold hover:bg-gray-800 cursor-pointer text-sm md:text-base md:ml-auto">
-                Suscribirme
-              </button>
+              <div className="flex flex-wrap gap-2 md:gap-3 px-2 md:px-0 items-center">
+                <div className="flex items-center">
+                  <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 md:py-3 rounded-l-full text-xs md:text-sm hover:bg-gray-200 text-black cursor-pointer flex items-center gap-1 md:gap-2">
+                    <ThumbsUp size={14} className="md:w-5 md:h-5"/>{likes}
+                  </button>
+                  <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 md:py-3 rounded-r-full hover:bg-gray-200 text-black cursor-pointer">
+                    <ThumbsDown size={14} className="md:w-5 md:h-5"/>
+                  </button>
+                </div>
+                <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-xs md:text-sm rounded-full hover:bg-gray-200 flex items-center gap-1 text-black cursor-pointer">
+                  <CornerUpRight size={14} className="md:w-5 md:h-5"/> Compartir
+                </button>
+                <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-xs md:text-sm rounded-full hover:bg-gray-200 flex items-center gap-1 text-black cursor-pointer">
+                  <ArrowDownToLine size={14} className="md:w-5 md:h-5"/> Descargar
+                </button>
+                <button className="hidden md:flex bg-[#F2F2F2] px-3 py-2 text-sm rounded-full hover:bg-gray-200 items-center gap-1 text-black cursor-pointer">
+                  <CircleDollarSign/> Gracias
+                </button>
+                <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-sm rounded-full hover:bg-gray-200 text-black cursor-pointer">
+                  <Ellipsis size={14} className="md:w-5 md:h-5"/>
+                </button>
+              </div>
             </section>
 
             {/* Botones de acción - responsive */}
-            <div className="flex flex-wrap gap-2 md:gap-3 mt-3 md:mt-4 px-2 md:px-0">
-              <div className="flex items-center">
-                <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 md:py-3 rounded-l-full text-xs md:text-sm hover:bg-gray-200 text-black cursor-pointer flex items-center gap-1 md:gap-2">
-                  <ThumbsUp size={14} className="md:w-5 md:h-5"/>{likes}
-                </button>
-                <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 md:py-3 rounded-r-full hover:bg-gray-200 text-black cursor-pointer">
-                  <ThumbsDown size={14} className="md:w-5 md:h-5"/>
-                </button>
-              </div>
-              <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-xs md:text-sm rounded-full hover:bg-gray-200 flex items-center gap-1 text-black cursor-pointer">
-                <CornerUpRight size={14} className="md:w-5 md:h-5"/> Compartir
-              </button>
-              <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-xs md:text-sm rounded-full hover:bg-gray-200 flex items-center gap-1 text-black cursor-pointer">
-                <ArrowDownToLine size={14} className="md:w-5 md:h-5"/> Descargar
-              </button>
-              <button className="hidden md:flex bg-[#F2F2F2] px-3 py-2 text-sm rounded-full hover:bg-gray-200 items-center gap-1 text-black cursor-pointer">
-                <CircleDollarSign/> Gracias
-              </button>
-              <button className="bg-[#F2F2F2] px-2 md:px-3 py-2 text-sm rounded-full hover:bg-gray-200 text-black cursor-pointer">
-                <Ellipsis size={14} className="md:w-5 md:h-5"/>
-              </button>
-            </div>
 
             <section className="bg-[#F2F2F2] py-3 px-3 rounded-xl mt-4 md:mt-5 mx-2 md:mx-0">
               <div className="flex gap-4 text-xs md:text-sm">
@@ -196,7 +196,7 @@ export const VideoViewer = () => {
         {/* Videos relacionados en móvil */}
         <div className="lg:hidden mt-6">
           <h3 className="text-black font-bold text-lg px-2 mb-4">Videos relacionados</h3>
-          <VideoList videos={videos} layout="list" isSidebarOpen={false} />
+          <VideoList videos={videos} layout="list" isInSidebar={true} />
         </div>
       </article>
 
