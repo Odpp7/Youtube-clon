@@ -4,20 +4,46 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 export const VideoCard = ({ video, layout }) => {
-  const { snippet, statistics, contentDetails } = video;
-  const videoId = video.id?.videoId || video.id;
+  const isSupabaseVideo = !video?.snippet && (video?.URL || video?.Name || video?.ThumbnailURL);
 
-  // 🔹 Formatear vistas
+  const snippet = isSupabaseVideo
+    ? {
+        title: video?.Name || "Sin título",
+        description: video?.Description || "",
+        publishedAt: video?.Date || video?.created_at || new Date().toISOString(),
+        thumbnails: {
+          medium: { url: video?.ThumbnailURL || null },
+          high: { url: video?.ThumbnailURL || null },
+        },
+        channelTitle: video?.channelTitle || video?.Channel || "Mi canal",
+      }
+    : (video?.snippet || {});
+
+  const statistics = isSupabaseVideo
+    ? { viewCount: video?.Views || video?.viewCount || 0 }
+    : (video?.statistics || {});
+
+  const contentDetails = isSupabaseVideo
+    ? { duration: video?.DurationISO || video?.duration || null }
+    : (video?.contentDetails || {});
+
+  // 🔥 MOVER videoId ANTES de usarlo
+  const videoId = isSupabaseVideo
+    ? (typeof video?.id !== "undefined" ? video.id : `supabase-${Math.random().toString(36).slice(2, 9)}`)
+    : (video?.id?.videoId || video?.id);
+
+  // 🔥 AHORA videoUrl puede usar videoId
+  const videoUrl = isSupabaseVideo 
+    ? `/video/${videoId}?type=supabase&q=${encodeURIComponent(snippet?.title || "")}`
+    : `/video/${videoId}?q=${encodeURIComponent(snippet?.title || "")}`;
+
   const formatViews = (num) => {
     if (!num) return "Sin vistas";
-    if (num >= 1_000_000)
-      return (num / 1_000_000).toFixed(1) + " M de visualizaciones";
-    if (num >= 1_000)
-      return (num / 1_000).toFixed(1) + " K de visualizaciones";
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + " M de visualizaciones";
+    if (num >= 1_000) return (num / 1_000).toFixed(1) + " K de visualizaciones";
     return num + " visualizaciones";
   };
 
-  // 🔹 Formatear tiempo
   const formatDate = (date) => {
     const diff = Date.now() - new Date(date).getTime();
     const days = diff / (1000 * 60 * 60 * 24);
@@ -28,7 +54,6 @@ export const VideoCard = ({ video, layout }) => {
     return `hace ${Math.floor(days / 365)} años`;
   };
 
-  // 🔹 Duración ISO8601 → mm:ss
   const formatDuration = (iso) => {
     if (!iso) return "";
     const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
@@ -41,16 +66,23 @@ export const VideoCard = ({ video, layout }) => {
   const published = useMemo(() => formatDate(snippet?.publishedAt), [snippet]);
   const duration = useMemo(() => formatDuration(contentDetails?.duration), [contentDetails]);
 
-  if (layout === "sidebar") {
+  const thumbnailUrl = snippet?.thumbnails?.medium?.url || snippet?.thumbnails?.high?.url || null;
+
+  if (layout === "list") {
     return (
-      <Link href={`/video/${videoId}?q=${encodeURIComponent(snippet?.title || '')}`} className="block">
-        <div className="flex gap-3 p-2 hover:bg-gray-50 rounded cursor-pointer transition-colors">
+      <Link href={videoUrl} className="block">
+        <div className="flex gap-3 hover:bg-gray-50 rounded cursor-pointer transition-colors">
           <div className="relative flex-shrink-0">
-            <img
-              src={snippet?.thumbnails?.medium?.url || snippet?.thumbnails?.high?.url}
-              alt={snippet?.title}
-              className="w-40 h-24 object-cover rounded"
-            />
+            {thumbnailUrl ? (
+              <img src={thumbnailUrl} className="w-40 h-24 object-cover rounded"/>
+            ) : isSupabaseVideo && video?.URL ? (
+              <video src={video.URL} className="w-40 h-24 object-cover rounded"/>
+            ) : (
+              <div className="w-40 h-24 bg-gray-200 rounded flex items-center justify-center text-sm text-gray-500">
+                Sin miniatura
+              </div>
+            )}
+
             {duration && (
               <span className="absolute bottom-1 right-1 bg-black bg-opacity-80 text-white text-xs px-1 py-0.5 rounded">
                 {duration}
@@ -59,16 +91,9 @@ export const VideoCard = ({ video, layout }) => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-sm line-clamp-2 mb-1 text-black leading-tight">
-              {snippet?.title}
-            </h3>
+            <h3 className="font-medium text-sm line-clamp-2 mb-1 text-black leading-tight"> {snippet?.title}</h3>
             <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
-            <p className="text-xs text-gray-500">
-              {statistics?.viewCount ? 
-                `${parseInt(statistics.viewCount).toLocaleString()} vistas` : 
-                'Sin datos'
-              } • {published}
-            </p>
+            <p className="text-xs text-gray-500"> {statistics?.viewCount ? `${parseInt(statistics.viewCount).toLocaleString()} vistas` : 'Sin datos'} • {published}</p>
           </div>
         </div>
       </Link>
@@ -76,21 +101,19 @@ export const VideoCard = ({ video, layout }) => {
   }
 
   return (
-    <Link href={`/video/${videoId}?q=${encodeURIComponent(snippet?.title || '')}`} className="block">
+    <Link href={videoUrl} className="block">
       <div className="cursor-pointer transition-all duration-300">
-        {/* Miniatura */}
         <div className="relative flex-shrink-0">
-          <img
-            src={snippet?.thumbnails?.medium?.url || snippet?.thumbnails?.high?.url}
-            alt={snippet?.title}
-            className={`rounded-xl object-cover ${
-              layout === "grid" ? "w-full aspect-video" : "w-64 h-36"
-            }`}
-          />
+          {thumbnailUrl ? (
+            <img src={thumbnailUrl} className={`rounded-xl object-cover ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"}`}/>
+          ) : isSupabaseVideo && video?.URL ? (
+            <video src={video.URL} className={`rounded-xl object-cover ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"}`}/>
+          ) : (
+            <div className={`rounded-xl bg-gray-200 ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"} flex items-center justify-center text-gray-500`}> Sin miniatura</div>
+          )}
+
           {duration && (
-            <span className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
-              {duration}
-            </span>
+            <span className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded"> {duration}</span>
           )}
         </div>
 
@@ -100,9 +123,7 @@ export const VideoCard = ({ video, layout }) => {
             <div className="flex flex-col">
               <h3 className="text-sm font-semibold line-clamp-2 leading-snug mb-1">{snippet?.title}</h3>
               <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
-              <p className="text-xs text-gray-600">
-                {views} • {published}
-              </p>
+              <p className="text-xs text-gray-600"> {views} • {published}</p>
             </div>
           </div>
         </div>

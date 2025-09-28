@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { SearchBar } from "../../components/SearchBar";
 import { SideBar } from "../../components/SideBar";
-import { VideoViewer } from "../../components/VideoViewer";
+import { VideoViewer } from "./VideoViewer";
 import SearchVideo from "../../services/SearchVideo";
 
 export default function VideoPage() {
@@ -18,12 +18,7 @@ export default function VideoPage() {
   return (
     <div>
       <SearchBar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
-      <div className="flex">
-        <SideBar isOpen={!isSidebarOpen} />
-        <div className={`transition-all duration-300 flex-1 ${!isSidebarOpen ? "ml-64" : "ml-20"}`}>
           <VideoViewer/>
-        </div>
-      </div>
     </div>
   );
 }

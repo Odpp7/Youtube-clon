@@ -3,7 +3,7 @@ export default async function SearchVideo(query) {
     const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
     
     // Primer request: buscar videos
-    const searchResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${query}&key=${API_KEY}`);
+    const searchResponse = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&q=${query}&key=${API_KEY}`);
 
     if (!searchResponse.ok) {
       throw new Error("Error en la petición a YouTube API");

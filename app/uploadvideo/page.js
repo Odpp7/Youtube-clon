@@ -6,16 +6,16 @@ import { VideoSection } from "./VideoSection";
 import { ModalVideo } from "./modalVideo";
 
 export default function UploadVideoPage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   return (
     <div>
-      <SearchStudio onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} onUploadClick={() => setIsUploadModalOpen(true)} />
+      <SearchStudio onMenuClick={() => setIsSidebarExpanded(!isSidebarExpanded)} onUploadClick={() => setIsUploadModalOpen(true)} />
 
       <div className="flex">
-        <SideBarStudio isOpen={isSidebarOpen} />
-        <VideoSection isSidebarOpen={isSidebarOpen} />
+        <SideBarStudio isOpen={isSidebarExpanded} />
+        <VideoSection isSidebarOpen={isSidebarExpanded} />
       </div>
 
       {isUploadModalOpen && (

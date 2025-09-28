@@ -13,7 +13,7 @@ export default function Home() {
   const toggleSidebar = () => { setIsSidebarOpen(!isSidebarOpen); };
 
   useEffect(() => {
-    SearchVideo("Tendencias").then(setVideos);
+    SearchVideo("mostPopular").then(setVideos);
   }, []);
 
   return (
