@@ -6,6 +6,8 @@ import { useMemo } from "react";
 export const VideoCard = ({ video, layout }) => {
   const isSupabaseVideo = !video?.snippet && (video?.URL || video?.Name || video?.ThumbnailURL);
 
+  if (layout === "list" && isSupabaseVideo) {return null;}
+
   const snippet = isSupabaseVideo
     ? {
         title: video?.Name || "Sin título",
@@ -27,12 +29,10 @@ export const VideoCard = ({ video, layout }) => {
     ? { duration: video?.DurationISO || video?.duration || null }
     : (video?.contentDetails || {});
 
-  // 🔥 MOVER videoId ANTES de usarlo
   const videoId = isSupabaseVideo
     ? (typeof video?.id !== "undefined" ? video.id : `supabase-${Math.random().toString(36).slice(2, 9)}`)
     : (video?.id?.videoId || video?.id);
 
-  // 🔥 AHORA videoUrl puede usar videoId
   const videoUrl = isSupabaseVideo 
     ? `/video/${videoId}?type=supabase&q=${encodeURIComponent(snippet?.title || "")}`
     : `/video/${videoId}?q=${encodeURIComponent(snippet?.title || "")}`;
@@ -71,14 +71,12 @@ export const VideoCard = ({ video, layout }) => {
   if (layout === "list") {
     return (
       <Link href={videoUrl} className="block">
-        <div className="flex gap-3 hover:bg-gray-50 rounded cursor-pointer transition-colors">
+        <div className="flex gap-3 hover:bg-custom-gray-50 rounded cursor-pointer transition-colors">
           <div className="relative flex-shrink-0">
             {thumbnailUrl ? (
               <img src={thumbnailUrl} className="w-40 h-24 object-cover rounded"/>
-            ) : isSupabaseVideo && video?.URL ? (
-              <video src={video.URL} className="w-40 h-24 object-cover rounded"/>
             ) : (
-              <div className="w-40 h-24 bg-gray-200 rounded flex items-center justify-center text-sm text-gray-500">
+              <div className="w-40 h-24 bg-custom-gray-200 rounded flex items-center justify-center text-sm text-custom-gray-500">
                 Sin miniatura
               </div>
             )}
@@ -91,9 +89,13 @@ export const VideoCard = ({ video, layout }) => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-sm line-clamp-2 mb-1 text-black leading-tight"> {snippet?.title}</h3>
-            <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
-            <p className="text-xs text-gray-500"> {statistics?.viewCount ? `${parseInt(statistics.viewCount).toLocaleString()} vistas` : 'Sin datos'} • {published}</p>
+            <h3 className="font-medium text-sm line-clamp-2 mb-1 text-custom leading-tight">
+              {snippet?.title}
+            </h3>
+            <p className="text-xs text-custom-gray-600 mb-1">{snippet?.channelTitle}</p>
+            <p className="text-xs text-custom-gray-500">
+              {statistics?.viewCount ? `${parseInt(statistics.viewCount).toLocaleString()} vistas` : 'Sin datos'} • {published}
+            </p>
           </div>
         </div>
       </Link>
@@ -109,21 +111,28 @@ export const VideoCard = ({ video, layout }) => {
           ) : isSupabaseVideo && video?.URL ? (
             <video src={video.URL} className={`rounded-xl object-cover ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"}`}/>
           ) : (
-            <div className={`rounded-xl bg-gray-200 ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"} flex items-center justify-center text-gray-500`}> Sin miniatura</div>
+            <div className={`rounded-xl bg-custom-gray-200 ${layout === "grid" ? "w-full aspect-video" : "w-64 h-36"} flex items-center justify-center text-custom-gray-500`}>
+              Sin miniatura
+            </div>
           )}
 
           {duration && (
-            <span className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded"> {duration}</span>
+            <span className="absolute bottom-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded">
+              {duration}
+            </span>
           )}
         </div>
 
-        {/* Info */}
         <div className={layout === "grid" ? "mt-3" : "flex-1 pl-3"}>
           <div className="flex items-start gap-2">
             <div className="flex flex-col">
-              <h3 className="text-sm font-semibold line-clamp-2 leading-snug mb-1">{snippet?.title}</h3>
-              <p className="text-xs text-gray-600 mb-1">{snippet?.channelTitle}</p>
-              <p className="text-xs text-gray-600"> {views} • {published}</p>
+              <h3 className="text-sm font-semibold line-clamp-2 leading-snug mb-1 text-custom">
+                {snippet?.title}
+              </h3>
+              <p className="text-xs text-custom-gray-600 mb-1">{snippet?.channelTitle}</p>
+              <p className="text-xs text-custom-gray-600">
+                {views} • {published}
+              </p>
             </div>
           </div>
         </div>

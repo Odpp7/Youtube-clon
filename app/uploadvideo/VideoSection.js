@@ -69,16 +69,16 @@ export const VideoSection = ({ isSidebarOpen }) => {
   };
 
   return (
-    <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-16'} bg-white`}>
-      <div className="bg-white border-b border-gray-200 p-4 md:p-6">
+    <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-16'} bg-custom`}>
+      <div className="bg-custom border-b border-custom-gray-200 p-4 md:p-6">
         <div className="flex items-center gap-4 mb-4 md:mb-6">
-          <h1 className="text-xl md:text-2xl font-semibold text-gray-900">Contenido del canal</h1>
+          <h1 className="text-xl md:text-2xl font-semibold text-custom">Contenido del canal</h1>
         </div>
       </div>
 
       <div className="p-2 md:p-6">
-        <div className="hidden md:block bg-gray-50 px-4 py-3 rounded-t-lg">
-          <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-600">
+        <div className="hidden md:block bg-custom-gray-50 px-4 py-3 rounded-t-lg">
+          <div className="grid grid-cols-12 gap-4 text-sm font-medium text-custom-gray-600">
             <div className="col-span-4">Video</div>
             <div className="col-span-2">Visibilidad</div>
             <div className="col-span-2">Restricciones</div>
@@ -87,34 +87,34 @@ export const VideoSection = ({ isSidebarOpen }) => {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-lg md:rounded-b-lg">
+        <div className="bg-custom border border-custom-gray-200 rounded-lg md:rounded-b-lg">
           {videos.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-custom-gray-500">
               <p>No hay videos disponibles</p>
             </div>
           ) : (
             videos.map((video) => (
-              <div key={video.id} className="border-b last:border-b-0 hover:bg-gray-50 p-3 md:p-4">
+              <div key={video.id} className="border-b border-custom-gray-200 last:border-b-0 hover:bg-custom-gray-50 p-3 md:p-4">
                 <div className="block md:hidden space-y-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-24 h-16 flex-shrink-0 bg-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => handlePlayVideo(video)}>
+                    <div className="w-24 h-16 flex-shrink-0 bg-custom-gray-200 rounded-lg overflow-hidden cursor-pointer" onClick={() => handlePlayVideo(video)}>
                       {video.URL && <video src={video.URL} className="w-full h-full object-cover" />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{video.Name || "Sin título"}</h3>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">{video.Description || "Añadir descripción"}</p>
+                      <h3 className="font-medium text-custom text-sm line-clamp-2">{video.Name || "Sin título"}</h3>
+                      <p className="text-xs text-custom-gray-500 mt-1 line-clamp-2">{video.Description || "Añadir descripción"}</p>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="bg-gray-100 px-2 py-1 rounded-full flex items-center gap-1">
+                    <span className="bg-custom-gray-100 px-2 py-1 rounded-full flex items-center gap-1 text-custom">
                       <Eye size={12} />
                       {video.Visibilidad || "Sin visibilidad"}
                     </span>
-                    <span className="bg-gray-100 px-2 py-1 rounded-full">
+                    <span className="bg-custom-gray-100 px-2 py-1 rounded-full text-custom">
                       {video.Restricciones || "Sin restricción"}
                     </span>
-                    <span className="bg-gray-100 px-2 py-1 rounded-full">
+                    <span className="bg-custom-gray-100 px-2 py-1 rounded-full text-custom">
                       {new Date(video.Date).toLocaleDateString("es-CO")}
                     </span>
                   </div>
@@ -131,30 +131,26 @@ export const VideoSection = ({ isSidebarOpen }) => {
 
                 <div className="hidden md:grid md:grid-cols-12 gap-4 items-center">
                   <div className="flex col-span-4 items-center gap-3">
-                    <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer" onClick={() => handlePlayVideo(video)}>
+                    <div className="w-32 h-20 bg-custom-gray-200 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer" onClick={() => handlePlayVideo(video)}>
                       {video.URL && <video src={video.URL} className="w-full h-full object-cover" />}
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-medium text-gray-900 text-sm">{video.Name || "Sin título"}</h3>
-                      <p className="text-xs text-gray-500">{video.Description || "Añadir descripción"}</p>
+                      <h3 className="font-medium text-custom text-sm">{video.Name || "Sin título"}</h3>
+                      <p className="text-xs text-custom-gray-500">{video.Description || "Añadir descripción"}</p>
                     </div>
                   </div>
 
-                  {/* Visibilidad */}
-                  <div className="flex col-span-2 items-center gap-2 text-sm">
-                    <Eye size={16} className="text-gray-400" />
+                  <div className="flex col-span-2 items-center gap-2 text-sm text-custom">
+                    <Eye size={16} className="text-custom-gray-400" />
                     <p>{video.Visibilidad || "Sin visibilidad"}</p>
                   </div>
 
-                  {/* Restricciones */}
-                  <div className="text-sm col-span-2">{video.Restricciones || "Sin restricción"}</div>
+                  <div className="text-sm col-span-2 text-custom">{video.Restricciones || "Sin restricción"}</div>
 
-                  {/* Fecha */}
-                  <div className="text-xs text-gray-600 col-span-2">
+                  <div className="text-xs text-custom-gray-600 col-span-2">
                     {new Date(video.Date).toLocaleDateString("es-CO")}
                   </div>
 
-                  {/* Acciones */}
                   <div className="flex gap-3">
                     <button onClick={() => handleEdit(video)} className="text-blue-600 hover:text-blue-800">
                       <CircleFadingArrowUp />
@@ -174,11 +170,10 @@ export const VideoSection = ({ isSidebarOpen }) => {
         <ModalVideo onClose={handleCloseModal} video={selectedVideo} />
       )}
 
-      {/* Reproductor de video */}
       {playingVideo && (
         <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
           <div className="relative w-full max-w-4xl mx-4">
-            <button onClick={handleClosePlayer} className="absolute -top-10 right-0 text-white hover:text-gray-300  cursor-pointer">
+            <button onClick={handleClosePlayer} className="absolute -top-10 right-0 text-white hover:text-gray-300 cursor-pointer">
               <X size={32} />
             </button>
             <div className="bg-black rounded-lg overflow-hidden">
