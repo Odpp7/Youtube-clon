@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Menu, Search, User, ChevronDown, Users, ChevronRight, LogOut, Video } from "lucide-react";
 import { supabase } from "../services/supabaseClient";
 
-export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
+export const SearchStudio = ({ onMenuClick, onUploadClick, onSearch, videos }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -25,7 +25,11 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
+      const filteredVideos = videos.filter(video => 
+        video.Name?.toLowerCase().includes(searchTerm.toLowerCase()) );
+      onSearch(filteredVideos, searchTerm);
+    } else {
+      onSearch(null, "");
     }
   };
 
@@ -42,24 +46,9 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.user-dropdown')) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const goToYoutube = () => {
     router.push("/");
   }
-
-  const getInitials = (name) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
 
   return (
     <header className="flex items-center justify-between px-2 md:px-4 py-2 bg-custom border-b border-custom-gray-200 sticky top-0 z-50">
@@ -67,7 +56,7 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
         <button onClick={onMenuClick} className="p-1.5 md:p-2 hover:bg-custom-gray-100 rounded-full cursor-pointer">
           <Menu size={18} className="md:w-5 md:h-5 text-custom" />
         </button>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1" onClick={() => window.location.reload()}>
           <img src="/Second.png" width="80" className="cursor-pointer md:w-[120px]" />
         </div>
       </div>
@@ -75,12 +64,7 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
       <div className="flex-1 max-w-2xl mx-2 md:mx-8">
         <div className="flex">
           <div className="flex-1 relative">
-            <input 
-              type="text" 
-              placeholder="Buscar" 
-              value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            <input type="text" placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               className="w-full px-2 md:px-4 py-1.5 md:py-2 text-sm md:text-base border border-custom-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 search"
             />
           </div>
@@ -100,11 +84,7 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
           {user ? (
             <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-1 md:gap-2 cursor-pointer hover:bg-custom-gray-50 rounded-full p-1">
               <div className="w-6 h-6 md:w-8 md:h-8 bg-[#065fd4] text-white rounded-full flex items-center justify-center text-xs md:text-sm font-semibold">
-                {user.user_metadata?.avatar_url ? (
                   <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-6 h-6 md:w-8 md:h-8 rounded-full"/>
-                ) : (
-                  getInitials(user.user_metadata?.full_name || user.email)
-                )}
               </div>
               <ChevronDown size={14} className="text-custom-gray-600 md:w-4 md:h-4 hidden md:block" />
             </div>
@@ -120,11 +100,7 @@ export const SearchStudio = ({ onMenuClick, onUploadClick }) => {
               <div className="p-3 md:p-4 border-b border-custom-gray-200">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#065fd4] text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                    {user.user_metadata?.avatar_url ? (
                       <img src={user.user_metadata.avatar_url} className="w-8 h-8 md:w-10 md:h-10 rounded-full"/>
-                    ) : (
-                      getInitials(user.user_metadata?.full_name || user.email)
-                    )}
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-custom text-sm md:text-base">

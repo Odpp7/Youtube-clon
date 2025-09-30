@@ -4,7 +4,7 @@ import { Eye, Trash, CircleFadingArrowUp, X } from "lucide-react";
 import { supabase } from "../services/supabaseClient";
 import { ModalVideo } from "./modalVideo";
 
-export const VideoSection = ({ isSidebarOpen }) => {
+export const VideoSection = ({ isSidebarOpen, filteredVideos, searchTerm, onVideosLoaded }) => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -19,6 +19,7 @@ export const VideoSection = ({ isSidebarOpen }) => {
     if (!user) {
       setVideos([]);
       setLoading(false);
+      if (onVideosLoaded) onVideosLoaded([]);
       return;
     }
 
@@ -27,8 +28,14 @@ export const VideoSection = ({ isSidebarOpen }) => {
       .select("*")
       .eq("user_id", user.id);
 
-    if (error) console.error("Error fetching videos:", error);
-    else setVideos(videosData || []);
+    if (error) {
+      console.error("Error fetching videos:", error);
+      setVideos([]);
+      if (onVideosLoaded) onVideosLoaded([]);
+    } else {
+      setVideos(videosData || []);
+      if (onVideosLoaded) onVideosLoaded(videosData || []);
+    }
 
     setLoading(false);
   };
@@ -68,12 +75,21 @@ export const VideoSection = ({ isSidebarOpen }) => {
     setPlayingVideo(null);
   };
 
+  const videosToShow = filteredVideos !== null ? filteredVideos : videos;
+
   return (
     <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-16'} bg-custom`}>
       <div className="bg-custom border-b border-custom-gray-200 p-4 md:p-6">
         <div className="flex items-center gap-4 mb-4 md:mb-6">
-          <h1 className="text-xl md:text-2xl font-semibold text-custom">Contenido del canal</h1>
+          <h1 className="text-xl md:text-2xl font-semibold text-custom">
+            {searchTerm ? `Resultados de "${searchTerm}"` : 'Contenido del canal'}
+          </h1>
         </div>
+        {searchTerm && (
+          <p className="text-sm text-custom-gray-600">
+            {videosToShow.length} video{videosToShow.length !== 1 ? 's' : ''} encontrado{videosToShow.length !== 1 ? 's' : ''}
+          </p>
+        )}
       </div>
 
       <div className="p-2 md:p-6">
@@ -88,12 +104,12 @@ export const VideoSection = ({ isSidebarOpen }) => {
         </div>
 
         <div className="bg-custom border border-custom-gray-200 rounded-lg md:rounded-b-lg">
-          {videos.length === 0 ? (
+          {videosToShow.length === 0 ? (
             <div className="p-8 text-center text-custom-gray-500">
-              <p>No hay videos disponibles</p>
+              <p>{searchTerm ? 'No se encontraron videos con ese término' : 'No hay videos disponibles'}</p>
             </div>
           ) : (
-            videos.map((video) => (
+            videosToShow.map((video) => (
               <div key={video.id} className="border-b border-custom-gray-200 last:border-b-0 hover:bg-custom-gray-50 p-3 md:p-4">
                 <div className="block md:hidden space-y-3">
                   <div className="flex items-start gap-3">
