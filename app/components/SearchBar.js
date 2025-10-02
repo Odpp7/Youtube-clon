@@ -60,7 +60,7 @@ export const SearchBar = ({ onMenuClick }) => {
   return (
     <header className="flex items-center justify-between px-2 md:px-4 py-2 bg-custom border-b border-custom-gray-200 sticky top-0 z-50">
       <div className="flex items-center space-x-2 md:space-x-4">
-        <button onClick={onMenuClick} className="p-1.5 md:p-2 hover:bg-custom-gray-100 rounded-full cursor-pointer">
+        <button onClick={onMenuClick} className="p-1.5 md:p-2 hover:bg-custom-gray-100 rounded-full cursor-pointer hidden md:block">
           <Menu size={18} className="md:w-5 md:h-5 text-custom" />
         </button>
         <div className="flex items-center space-x-1" onClick={(e) => { e.preventDefault(); router.push('/');}}>
@@ -83,7 +83,7 @@ export const SearchBar = ({ onMenuClick }) => {
           <button onClick={handleSearch} className="px-3 md:px-6 bg-custom-gray-50 border border-custom-gray-300 rounded-r-full hover:bg-custom-gray-200 cursor-pointer">
             <Search size={16} className="md:w-5 md:h-5 text-custom" />
           </button>
-          <button className="ml-2 md:ml-4 rounded-full px-2 md:px-3 bg-custom-gray-50 border border-custom-gray-300 hover:bg-custom-gray-200 cursor-pointer">
+          <button className="hidden md:block ml-2 md:ml-4 rounded-full px-2 md:px-3 bg-custom-gray-50 border border-custom-gray-300 hover:bg-custom-gray-200 cursor-pointer">
             <Mic size={16} className="md:w-5 md:h-5 text-custom" />
           </button>
         </div>

@@ -25,7 +25,7 @@ export const SideBar = ({isOpen, onCategoryClick}) =>{
   ];
 
     return(
-    <aside className={`fixed left-0 top-16 h-full transition-all duration-300 z-40 ${isOpen ? 'w-60' : 'w-16'} overflow-y-auto`}>
+    <aside className={`hidden md:block fixed left-0 top-16 h-full transition-all duration-300 z-40 ${isOpen ? 'w-60' : 'w-16'} overflow-y-auto`}>
       <div className="py-4">
         {/* Main Navigation */}
         <div className="px-2">

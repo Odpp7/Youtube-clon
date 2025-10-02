@@ -1,6 +1,7 @@
 "use client"
 import { SearchBar } from "./components/SearchBar";
 import { SideBar } from "./components/SideBar";
+import { BottomBar } from "./components/bottomBarMobile";
 import { FilterTags } from "./components/FilterTags";
 import { VideoList } from "./components/VideoList";
 import SearchVideo from "./services/SearchVideo";
@@ -20,32 +21,13 @@ export default function Home() {
     SearchVideo("mostPopular").then(setVideos);
   }, []);
 
-    useEffect(() => {
-    const checkScreenSize = () => {
-      if (window.innerWidth >= 768) {
-        setIsSidebarOpen(true);
-      } else {
-        setIsSidebarOpen(false);
-      }
-    };
-
-    checkScreenSize();
-
-    window.addEventListener('resize', checkScreenSize);
-
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
-
-  useEffect(() => {
-    SearchVideo("mostPopular").then(setVideos);
-  }, []);
-
   return (
     <main>
       <SearchBar onMenuClick={toggleSidebar} />
       
       <section>
         <SideBar isOpen={isSidebarOpen} onCategoryClick={handleCategorySearch} />
+        <BottomBar onCategoryClick={handleCategorySearch} />
 
         <div>
           <FilterTags isSidebarOpen={isSidebarOpen} />

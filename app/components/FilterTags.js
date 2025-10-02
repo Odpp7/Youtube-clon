@@ -19,23 +19,18 @@ export const FilterTags = ({ isSidebarOpen }) => {
   };
 
   return (
-    <div className={`transition-all duration-300 ${isSidebarOpen ? 'ml-60' : 'ml-16'}`}>
+    <div className={`transition-all duration-300 ${isSidebarOpen ? 'md:ml-60' : 'md:ml-16'}`}>
       <div className="relative px-6 py-4">
-        <button 
-          onClick={scrollLeft} 
+        <button onClick={scrollLeft} 
           className="absolute left-2 top-1/2 -translate-y-1/2 bg-custom hover:bg-custom-gray-100 p-2 rounded-full shadow-md border border-custom-gray-300 cursor-pointer text-custom"
         >
           <ChevronLeft size={16} />
         </button>
         
-        <div 
-          ref={scrollContainerRef} 
-          className="flex space-x-3 overflow-x-auto scrollbar-hide scroll-smooth mx-8" 
-          style={{ scrollbarWidth: 'none' }}
-        >
+        <div ref={scrollContainerRef} className="flex space-x-3 overflow-x-auto scrollbar-hide scroll-smooth mx-8" style={{ scrollbarWidth: 'none' }}>
+
           {tags.map((tag, index) => (
-            <button 
-              key={index} 
+            <button key={index} 
               className="px-3 py-1.5 rounded-lg text-sm flex-shrink-0 border bg-custom-gray-100 border-custom-gray-300 hover:bg-custom-gray-200 cursor-pointer text-custom"
             >
               {tag}
@@ -43,8 +38,7 @@ export const FilterTags = ({ isSidebarOpen }) => {
           ))}
         </div>
 
-        <button 
-          onClick={scrollRight} 
+        <button onClick={scrollRight} 
           className="absolute right-2 top-1/2 -translate-y-1/2 bg-custom hover:bg-custom-gray-100 p-2 rounded-full shadow-md border border-custom-gray-300 cursor-pointer text-custom"
         >
           <ChevronRight size={16} />
