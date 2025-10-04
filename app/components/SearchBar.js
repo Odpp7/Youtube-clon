@@ -9,8 +9,8 @@ export const SearchBar = ({ onMenuClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const router = useRouter();
   const { isDark, toggleTheme } = useTheme();
+  const router = useRouter();
 
   useEffect(() => { 
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,7 +64,7 @@ export const SearchBar = ({ onMenuClick }) => {
           <Menu size={18} className="md:w-5 md:h-5 text-custom" />
         </button>
         <div className="flex items-center space-x-1" onClick={(e) => { e.preventDefault(); router.push('/');}}>
-          <img src="/Youtube.png" width="100" className="cursor-pointer md:w-[150px]"/>
+          <img src="/Youtube.png" className="cursor-pointer md:w-[150px] w-[100px]"/>
         </div>
       </div>
 
@@ -77,7 +77,7 @@ export const SearchBar = ({ onMenuClick }) => {
               value={searchTerm} 
               onChange={(e) => setSearchTerm(e.target.value)} 
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full px-2 md:px-4 py-1.5 md:py-2 text-sm md:text-base border border-custom-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 search"
+              className="w-full px-2 md:px-4 py-1.5 md:py-2 border border-custom-gray-300 rounded-l-full focus:outline-none search"
             />
           </div>
           <button onClick={handleSearch} className="px-3 md:px-6 bg-custom-gray-50 border border-custom-gray-300 rounded-r-full hover:bg-custom-gray-200 cursor-pointer">

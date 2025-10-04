@@ -30,7 +30,7 @@ export default function Home() {
         <BottomBar onCategoryClick={handleCategorySearch} />
 
         <div>
-          <FilterTags isSidebarOpen={isSidebarOpen} />
+          <FilterTags isSidebarOpen={isSidebarOpen} onCategoryClick={handleCategorySearch} />
           <VideoList isSidebarOpen={isSidebarOpen} videos={videos} layout="grid" />
         </div>
       </section>

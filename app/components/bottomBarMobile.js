@@ -41,12 +41,12 @@ export const BottomBar = ({ onCategoryClick }) => {
   };
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-custom border-t border-custom-gray-200 z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-custom border-t z-50">
       <div className="flex justify-around items-center h-14">
         {navItems.map((item, index) => (
-          <button key={index} onClick={() => handleClick(item)} className="flex flex-col items-center justify-center flex-1 h-full active:bg-custom-gray-100">
+          <button key={index} onClick={() => handleClick(item)} className="flex flex-col items-center justify-center">
               <item.icon size={22} className="text-custom" />
-              <span className="text-[10px] mt-0.5 text-custom">{item.label}</span>
+              <span className="text-[10px] text-custom">{item.label}</span>
           </button>
         ))}
       </div>

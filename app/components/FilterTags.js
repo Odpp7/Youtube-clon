@@ -2,8 +2,29 @@
 import { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export const FilterTags = ({ isSidebarOpen }) => {
-  const tags = ['Todos', 'Música', 'Videojuegos', 'Noticias', 'Reguetón', 'Podcasts', 'En tiempo real', 'Pop latino', 'Series de televisión', 'Mod de videojuegos', 'Modificaciones de Minecraft', 'Himno', 'Juegos de rol', 'Animación', 'Comedias', 'Balón de oro'];
+export const FilterTags = ({ isSidebarOpen, onCategoryClick }) => {
+  const tags = [
+    { label: 'Todos', searchTerm: 'tendencia' },
+    { label: 'Música', searchTerm: 'musica' },
+    { label: 'En Videojuegos', searchTerm: 'videojuegos' },
+    { label: 'Noticias', searchTerm: 'noticias' },
+    { label: 'Reguetón', searchTerm: 'regueton' },
+    { label: 'Podcasts', searchTerm: 'podcast' },
+    { label: 'Pop latino', searchTerm: 'pop' },
+    { label: 'Mod de videojuegos', searchTerm: 'mod videojuegos' },
+    { label: 'Modificaciones de Minecraft', searchTerm: 'minecraft' },
+    { label: 'Himno', searchTerm: 'himnos' },
+    { label: 'Juegos de rol', searchTerm: 'juegos de rol' },
+    { label: 'Animación', searchTerm: 'animacion' },
+    { label: 'Comedias', searchTerm: 'comedia' },
+    { label: 'Balón de oro', searchTerm: 'balon de oro' },
+    { label: 'Religion', searchTerm: 'religion' },
+    { label: 'Danza', searchTerm: 'danza' },
+    { label: 'Mundo', searchTerm: 'mundo' },
+    { label: 'Guitarra', searchTerm: 'guitarra' },
+     { label: 'Cine', searchTerm: 'peliculas' },
+  ];
+  
   const scrollContainerRef = useRef(null);
 
   const scrollLeft = () => {
@@ -27,13 +48,12 @@ export const FilterTags = ({ isSidebarOpen }) => {
           <ChevronLeft size={16} />
         </button>
         
-        <div ref={scrollContainerRef} className="flex space-x-3 overflow-x-auto scrollbar-hide scroll-smooth mx-8" style={{ scrollbarWidth: 'none' }}>
-
+        <div ref={scrollContainerRef} className="flex space-x-3 overflow-x-auto scrollbar-hide scroll-smooth mx-8" style={{ scrollbarWidth: 'none' }} onClick={() => onCategoryClick(tags.searchTerm)} >
           {tags.map((tag, index) => (
-            <button key={index} 
+            <button key={index}  
               className="px-3 py-1.5 rounded-lg text-sm flex-shrink-0 border bg-custom-gray-100 border-custom-gray-300 hover:bg-custom-gray-200 cursor-pointer text-custom"
             >
-              {tag}
+              {tag.label}
             </button>
           ))}
         </div>
