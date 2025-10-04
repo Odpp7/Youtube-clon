@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "../services/supabaseClient";
-import { HardDriveDownload } from "lucide-react";
+import { HardDriveDownload, Loader2 } from "lucide-react";
 
 export const ModalVideo = ({ onClose, video }) => {
   const [file, setFile] = useState(null);
@@ -10,13 +10,14 @@ export const ModalVideo = ({ onClose, video }) => {
   const [visibilidad, setVisibilidad] = useState(video?.Visibilidad || "");
   const [restricciones, setRestricciones] = useState(video?.Restricciones || "");
   const [url, setUrl] = useState(video?.URL || "");
+  const [uploading, setUploading] = useState(false);
 
   // Guardar o actualizar
   const handleSave = async () => {
     try {
+      setUploading(true);
       const { data: { session } } = await supabase.auth.getSession();
       const user = session?.user;
-      if (!user) return alert("No estás autenticado");
 
       let finalUrl = url;
 
@@ -36,7 +37,7 @@ export const ModalVideo = ({ onClose, video }) => {
       }
 
       if (video) {
-        //  ACTUALIZAR
+        //  actualizar
         const { error } = await supabase
           .from("Videos")
           .update({
@@ -68,10 +69,12 @@ export const ModalVideo = ({ onClose, video }) => {
         alert(" Video subido correctamente");
       }
       
-      onClose();
+      onClose(true);
     } catch (err) {
       console.error("Error guardando video:", err);
       alert(" Ocurrió un error al guardar el video");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -91,13 +94,9 @@ export const ModalVideo = ({ onClose, video }) => {
               <HardDriveDownload size={60} className="md:w-20 md:h-20" />
             </div>
             <p className="text-custom-gray-700 mb-2 text-sm md:text-base">
-              {video
-                ? "Puedes cambiar los datos del video o subir uno nuevo"
-                : "Selecciona archivos de video para subirlos"}
+              {video ? "Puedes cambiar los datos del video o subir uno nuevo" : "Selecciona archivos de video para subirlos"}
             </p>
-            <p className="text-xs md:text-sm text-custom-gray-500 mb-4">
-              Tus videos serán privados hasta que los publiques.
-            </p>
+            <p className="text-xs md:text-sm text-custom-gray-500 mb-4"> Tus videos serán privados hasta que los publiques.</p>
             <label className="bg-black text-white px-4 py-2 text-sm rounded cursor-pointer inline-block"> 
               Seleccionar archivos
               <input type="file" className="hidden" onChange={(e) => setFile(e.target.files[0])}/>
@@ -162,7 +161,8 @@ export const ModalVideo = ({ onClose, video }) => {
             onClick={handleSave} 
             className="bg-blue-600 text-white px-4 md:px-6 py-2 text-sm md:text-base rounded hover:bg-blue-700 cursor-pointer w-full md:w-auto"
           >
-            {video ? "Actualizar" : "Subir video"}
+            {uploading && <Loader2 className="animate-spin inline mr-2" size={18} />}
+            {uploading ? "Subiendo..." : (video ? "Actualizar" : "Subir video")}
           </button>
         </div>
       </div>

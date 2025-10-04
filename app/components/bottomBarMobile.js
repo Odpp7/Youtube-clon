@@ -1,9 +1,12 @@
 "use client"
 
 import { Home, Compass, Music, Plus, Radio } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "../services/supabaseClient";
 
 export const BottomBar = ({ onCategoryClick }) => {
+  const [user, setUser] = useState(null);
   const router = useRouter()
   const navItems = [
     { icon: Home, label: 'Principal', searchTerm: 'mostPopular' },
@@ -12,10 +15,26 @@ export const BottomBar = ({ onCategoryClick }) => {
     { icon: Music, label: 'Musica', searchTerm: 'musica' },
     { icon: Radio, label: 'En Directo', searchTerm: 'en vivo' },
   ];
+  
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription }} = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleClick = (item) => {
     if (item.action === 'upload') {
-      router.push("/uploadvideo");
+      if (user) {
+        router.push("/uploadvideo");
+      } else {
+        alert("Debes iniciar sesión para subir videos");
+      }
     } else if (item.searchTerm) {
       onCategoryClick(item.searchTerm);
     }
