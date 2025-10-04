@@ -96,7 +96,12 @@ export const ModalVideo = ({ onClose, video }) => {
             <p className="text-custom-gray-700 mb-2 text-sm md:text-base">
               {video ? "Puedes cambiar los datos del video o subir uno nuevo" : "Selecciona archivos de video para subirlos"}
             </p>
-            <p className="text-xs md:text-sm text-custom-gray-500 mb-4"> Tus videos serán privados hasta que los publiques.</p>
+            <p className="text-xs md:text-sm text-custom-gray-500"> Importante !!!!</p>
+            <div className="text-center">
+              <p className="text-xs md:text-sm text-custom-gray-500 mb-4 mx-auto max-w-md w-60">
+                Recarga la página después de montar el video para ver el video en lista
+              </p>
+            </div>
             <label className="bg-black text-white px-4 py-2 text-sm rounded cursor-pointer inline-block"> 
               Seleccionar archivos
               <input type="file" className="hidden" onChange={(e) => setFile(e.target.files[0])}/>
